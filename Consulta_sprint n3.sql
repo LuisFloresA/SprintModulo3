@@ -11,11 +11,14 @@ FLUSH PRIVILEGES;
 
 -- Creación de tablas de información relacional de la tienda TLOVENDO_SPRINT3
 
+
+-- En esta seccion se crea la tabla categoria con sus respectivo pk y atributos
 CREATE TABLE `categoria` (
   `id_categoria` int(8) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `nombre_categoria` varchar(40) NOT NULL
 );
 
+-- En esta seccion se crea la tabla categoria con sus respectivo pk y atributos, ademas se asocia una FK haciendo referencia a la pk de la tabla categoria
 CREATE TABLE `proveedor` (
   `id_proveedor` int(8) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `id_categoria` int(8) NOT NULL,
@@ -25,6 +28,7 @@ CREATE TABLE `proveedor` (
   FOREIGN KEY (`id_categoria`) REFERENCES `categoria`(`id_categoria`)
 );
 
+-- Creacion de una tabla de telefono de contacto ya que se especifica que al menos 2 numeros de teléfonos debe contar el proveedor
 CREATE TABLE `telefonoContacto` (
   `id_telefono` int(8) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `id_proveedor` int(8) NOT NULL,
@@ -33,6 +37,7 @@ CREATE TABLE `telefonoContacto` (
   FOREIGN KEY (`id_proveedor`) REFERENCES `proveedor`(`id_proveedor`)
 );
 
+-- Tabla producto que contiene un atributo "Stock Global", el cual consiste en la suma (teórica) provista por todos los proveedores relacionados con el producto
 CREATE TABLE `producto` (
   `id_producto` int(8) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `id_categoria` int(8) NOT NULL,
@@ -43,6 +48,7 @@ CREATE TABLE `producto` (
   FOREIGN KEY (`id_categoria`) REFERENCES `categoria`(`id_categoria`)
 );
 
+-- Tabla cliente que contiene información básica de este
 CREATE TABLE `cliente` (
   `id_cliente` int(8) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `nombre` varchar(40) NOT NULL,
@@ -50,6 +56,7 @@ CREATE TABLE `cliente` (
   `direccion` varchar(40) NOT NULL
 );
 
+-- Tabla que se produce del rompimiento entre el proveedor y el producto, en este caso se contiene un atributo llamado "stockProveedor" el cual consiste en cuanto stock del producto provee dicho proveedor (recordar que el StockGlobal es el aporte de todos los proveedores a este producto)
 CREATE TABLE `rompeProvProduct` (
   `id_rompePP` int(8) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `id_proveedor` int(8) NOT NULL,
@@ -59,6 +66,7 @@ CREATE TABLE `rompeProvProduct` (
   FOREIGN KEY (`id_proveedor`) REFERENCES `proveedor`(`id_proveedor`)
 );
 
+-- Tabla resultante de la asociación de clientes y productos, en ella se puede observar el atributo "unidadesVendidas", el cual consiste en cuantas unidades son "adquiridas" por el cliente de dicho producto para que, de esta forma, se pueda obtener el producto mas solicitado o mas "popular"
 CREATE TABLE `rompeClientProduct` (
   `id_rompeCP` int(8) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `id_producto` int(8) NOT NULL,
